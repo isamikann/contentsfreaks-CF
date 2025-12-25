@@ -1,0 +1,45 @@
+{
+  "listenerCount": 1500,
+  "platforms": [
+    {
+      "key": "spotify",
+      "name": "Spotify",
+      "url": "https://open.spotify.com/show/20otj7CiCZ0hcWYkkEpnLL?si=w3Jlrpg5Ssmk0TGa_Flb8g",
+      "color": "#1DB954"
+    },
+    {
+      "key": "apple",
+      "name": "Apple Podcasts",
+      "url": "https://podcasts.apple.com/jp/podcast/%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%84%E3%83%95%E3%83%AA%E3%83%BC%E3%82%AF%E3%82%B9/id1692185758",
+      "color": "#A855F7"
+    },
+    {
+      "key": "youtube",
+      "name": "YouTube",
+      "url": "https://youtube.com/@contentfreaks",
+      "color": "#FF0000"
+    }
+  ],
+  "hosts": [
+    {
+      "name": "みっくん",
+      "role": "司会進行",
+      "bio": "作品の裏側を深掘り＆司会進行担当。メーカー勤務のアプリエンジニア。「憂いはあるが、行動はポジティブ」なキャラクターに心惹かれがち。",
+      "image": "",
+      "social": {
+        "twitter": "",
+        "youtube": ""
+      }
+    },
+    {
+      "name": "あっきー",
+      "role": "コホスト",
+      "bio": "一般目線の感想担当、親しみやすさをプラス。メーカー勤務のハードエンジニア。「一周回って落ち着いた強者」なキャラクターに魅力を感じがち。",
+      "image": "",
+      "social": {
+        "twitter": "",
+        "youtube": ""
+      }
+    }
+  ]
+}
