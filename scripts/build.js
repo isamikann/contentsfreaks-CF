@@ -9,7 +9,6 @@ const DIST = path.join(ROOT, 'dist');
 const DATA_DIR = path.join(ROOT, 'data');
 const SITE_NAME = 'ContentFreaks';
 const EPISODE_PAGE_SIZE = 12;
-const BLOG_PAGE_SIZE = 12;
 
 const STATIC_ASSETS = [
   'critical.css',
@@ -17,7 +16,6 @@ const STATIC_ASSETS = [
   'components.css',
   'front-page.css',
   'page-episodes.css',
-  'page-blog.css',
   'page-profile.css',
   'page-history.css',
   'single.css',
@@ -134,7 +132,6 @@ function renderHead(title, description, bodyClass = '') {
   <link rel="stylesheet" href="/components.css">
   <link rel="stylesheet" href="/front-page.css">
   <link rel="stylesheet" href="/page-episodes.css">
-  <link rel="stylesheet" href="/page-blog.css">
   <link rel="stylesheet" href="/page-profile.css">
   <link rel="stylesheet" href="/page-history.css">
   <link rel="stylesheet" href="/single.css">
@@ -234,7 +231,7 @@ function renderHead(title, description, bodyClass = '') {
       <ul class="nav-list">
         <li class="nav-item"><a class="nav-link" href="/"><span class="nav-icon">🏠</span><span class="nav-text">ホーム</span></a></li>
         <li class="nav-item"><a class="nav-link" href="/episodes/"><span class="nav-icon">🎧</span><span class="nav-text">エピソード</span></a></li>
-        <li class="nav-item"><a class="nav-link" href="/blog/"><span class="nav-icon">📖</span><span class="nav-text">ブログ</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="https://note.com/mikkun_jp" target="_blank" rel="noopener"><span class="nav-icon">📖</span><span class="nav-text">note</span></a></li>
         <li class="nav-item"><a class="nav-link" href="/profile/"><span class="nav-icon">👥</span><span class="nav-text">プロフィール</span></a></li>
         <li class="nav-item"><a class="nav-link" href="/history/"><span class="nav-icon">📜</span><span class="nav-text">コンフリの歩み</span></a></li>
       </ul>
@@ -304,7 +301,7 @@ function renderFooter() {
       <ul class="footer-links">
         <li><a href="/">ホーム</a></li>
         <li><a href="/episodes/">エピソード</a></li>
-        <li><a href="/blog/">ブログ</a></li>
+        <li><a href="https://note.com/mikkun_jp" target="_blank" rel="noopener">note</a></li>
         <li><a href="/profile/">プロフィール</a></li>
         <li><a href="/history/">コンフリの歩み</a></li>
       </ul>
@@ -521,7 +518,7 @@ function buildHome({ episodes, site }) {
     <div class="episodes-grid">${recentList}</div>
     <div class="episodes-cta">
       <a href="/episodes/" class="episodes-view-all-btn">🎧 全エピソードを見る</a>
-      <a href="/blog/" class="blog-view-all-btn">📖 ブログ記事を見る</a>
+      <a href="https://note.com/mikkun_jp" class="blog-view-all-btn" target="_blank" rel="noopener">📖 noteを読む</a>
     </div>
   </div>
 </section>
@@ -1085,14 +1082,8 @@ function buildStaticSite() {
 
   const episodesRaw = readJson('episodes.json', { items: [] });
   const site = readJson('site.json', { listenerCount: 1500, platforms: [], hosts: [] });
-  const blogsRaw = readJson('blog.json', { items: [] });
 
   const episodes = (episodesRaw.items || []).map(normalizeEpisode).sort((a, b) => {
-    const da = new Date(a.publishedAt || 0).getTime();
-    const db = new Date(b.publishedAt || 0).getTime();
-    return db - da;
-  });
-  const posts = (blogsRaw.items || []).map(normalizeBlog).sort((a, b) => {
     const da = new Date(a.publishedAt || 0).getTime();
     const db = new Date(b.publishedAt || 0).getTime();
     return db - da;
@@ -1101,12 +1092,10 @@ function buildStaticSite() {
   buildHome({ episodes, site });
   buildEpisodeList({ episodes });
   buildEpisodeDetails({ episodes });
-  buildBlog({ posts });
-  buildBlogDetails({ posts });
   buildProfile({ site, episodes });
   buildHistory({ site, episodes });
 
-  console.log(`✅ Build completed. Episodes: ${episodes.length}, Blogs: ${posts.length}`);
+  console.log(`✅ Build completed. Episodes: ${episodes.length}`);
 }
 
 buildStaticSite();
