@@ -408,8 +408,8 @@ Version: 2.0.0
 
     /* モバイル用フォントサイズ */
     --mobile-hero-title: clamp(1.8rem, 4vw, 2.5rem);
-    --mobile-card-title: 1rem;
-    --mobile-body-text: 0.95rem;
+    --mobile-card-title: 0.9rem;
+    --mobile-body-text: 0.9rem;
     --mobile-meta: 0.875rem;
 }
 
