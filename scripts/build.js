@@ -536,8 +536,8 @@ function buildHome({ episodes, site }) {
   <div class="testimonials-container">
     <div class="testimonials-header fade-in"><h2>リスナーの声</h2></div>
     <div class="testimonials-grid">
-      <div class="testimonial-card scale-in delay-100"><div class="testimonial-quote">いつも配信ありがとうございます！毎度楽しく拝聴しています。</div><div class="testimonial-author"><div class="author-avatar">チ</div><div class="author-info"><h4>チャリさん</h4><div class="author-role">リスナー</div></div></div></div>
-      <div class="testimonial-card scale-in delay-200"><div class="testimonial-quote">自分と違う視点の感想を聞くことが出来て、一緒に盛り上がれるのが嬉しいです。</div><div class="testimonial-author"><div class="author-avatar">の</div><div class="author-info"><h4>のじかさん</h4><div class="author-role">リスナー</div></div></div></div>
+      <div class="testimonial-card scale-in delay-100"><div class="testimonial-quote">いつも配信ありがとうございます！毎度楽しく拝聴しています。お二人が番組内で紹介していたのをきっかけに検索しハマったコンテンツが多くあり、家族や友人に「コンフリの２人がオススメしてた」と話すほど好きな番組です。</div><div class="testimonial-author"><div class="author-avatar">チ</div><div class="author-info"><h4>チャリさん</h4><div class="author-role">GoogleForm</div></div></div></div>
+      <div class="testimonial-card scale-in delay-200"><div class="testimonial-quote">いつも楽しく拝聴させていただいています！自分と違う視点の感想を聞くことが出来て、一緒に盛り上がれるのが嬉しいです。</div><div class="testimonial-author"><div class="author-avatar">の</div><div class="author-info"><h4>のじかさん</h4><div class="author-role">GoogleForm</div></div></div></div>
     </div>
   </div>
 </section>
