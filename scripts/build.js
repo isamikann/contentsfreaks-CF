@@ -18,15 +18,13 @@ const STATIC_ASSETS = [
   'front-page.css',
   'page-episodes.css',
   'page-blog.css',
+  'page-profile.css',
+  'page-history.css',
   'single.css',
   'style.css',
   'loading.css',
   'microinteractions.css',
   'page-works.css',
-  'page-history.css',
-  'page-profile.css',
-  'page-episodes.css',
-  'page-blog.css',
   'css-async.js',
   'microinteractions.js',
   'page-works.js'
@@ -137,6 +135,8 @@ function renderHead(title, description) {
   <link rel="stylesheet" href="/front-page.css">
   <link rel="stylesheet" href="/page-episodes.css">
   <link rel="stylesheet" href="/page-blog.css">
+  <link rel="stylesheet" href="/page-profile.css">
+  <link rel="stylesheet" href="/page-history.css">
   <link rel="stylesheet" href="/single.css">
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/loading.css">
@@ -235,24 +235,35 @@ function renderPlatforms(platforms) {
 function renderHosts(hosts) {
   if (!Array.isArray(hosts)) return '';
   const cards = hosts
-    .map((host) => {
+    .map((host, idx) => {
       const socials = host.social || {};
       const links = Object.entries(socials)
         .filter(([, url]) => url)
-        .map(([platform, url]) => `<a href="${url}" class="social-link" target="_blank" rel="noopener">${platform === 'youtube' ? '📺' : '🔗'}</a>`) 
+        .map(([platform, url]) => `<a href="${url}" class="social-link" target="_blank" rel="noopener">${platform === 'youtube' ? '📺' : '🐦'}</a>`) 
         .join('');
-      return `<div class="host-card">
-  <div class="host-image">${host.image ? `<img src="${host.image}" alt="${host.name}">` : '🎙️'}</div>
-  <div class="host-content">
-    <h3 class="host-name">${host.name}</h3>
-    <div class="host-role">${host.role || ''}</div>
-    <div class="host-bio">${host.bio || ''}</div>
-    <div class="host-social">${links}</div>
+      const tagList = host.tags || [];
+      const tagBadges = tagList.map((t) => `<span class="host-tag primary">${t}</span>`).join('');
+      const badge = idx === 0 ? 'Host' : 'Co-Host';
+      return `<div class="host-profile-card ${idx === 0 ? 'host-card-primary' : 'host-card-secondary'}">
+  <div class="host-profile-header">
+    <div class="host-profile-avatar">
+      ${host.image ? `<img src="${host.image}" alt="${host.name}" class="host-avatar-image">` : `<div class="avatar-placeholder ${idx === 0 ? 'primary-gradient' : 'secondary-gradient'}"><span class="avatar-icon">${host.emoji || '🎙️'}</span></div>`}
+      <div class="avatar-badge">${badge}</div>
+    </div>
+    <div class="host-profile-info">
+      <h2 class="host-name">${host.name}</h2>
+      <p class="host-role">${host.role || ''}</p>
+      <div class="host-tags">${tagBadges || ''}</div>
+      <div class="host-social-links">${links}</div>
+    </div>
+  </div>
+  <div class="host-profile-content">
+    <div class="host-description"><p>${host.bio || ''}</p></div>
   </div>
 </div>`;
     })
     .join('\n');
-  return `<div class="hosts-grid">${cards}</div>`;
+  return `<div class="profile-details-container">${cards}</div>`;
 }
 
 function renderEpisodeCard(ep) {
@@ -486,28 +497,56 @@ function buildBlog({ posts }) {
     pages.push([]); // データがなくても一覧ページを出力し404を防ぐ
   }
   const makeHtml = (pageItems, pageNumber) => {
-    const cards = pageItems.length ? pageItems.map(renderBlogCard).join('\n') : '<div class="no-blog-posts"><p>ブログ記事が見つかりませんでした。</p><p>新しい記事を追加してください。</p></div>';
+    const cards = pageItems.length
+      ? pageItems.map(renderBlogCard).join('\n')
+      : '<div class="no-blog-posts"><p>ブログ記事が見つかりませんでした。</p><p>新しい記事を追加してください。</p></div>';
+
     const pagination = pages.length > 1
-      ? `<div class="pagination">${pages
+      ? `<div class="load-more-container"><div class="pagination">${pages
           .map((_, i) => {
             const n = i + 1;
             const href = n === 1 ? '/blog/' : `/blog/page/${n}/`;
             const cls = n === pageNumber ? 'page-number active' : 'page-number';
             return `<a class="${cls}" href="${href}">${n}</a>`;
           })
-          .join('')}</div>`
+          .join('')}</div></div>`
       : '';
+
     return `${renderHead('ブログ')}
-<section class="content-area blog-area">
-  <section class="blog-hero">
-    <div class="blog-hero-bg"><div class="hero-pattern"></div></div>
-    <div class="blog-hero-content"><div class="blog-hero-icon">📖</div><h1>Blog Articles</h1><p class="blog-hero-description">ポッドキャスト分析、レビュー、コラムなど、じっくり読める記事をお届けします。</p></div>
-  </section>
-  <div class="main-content">
-    <div class="blog-grid" id="blog-grid">${cards}</div>
-    ${pagination}
+<main id="main" class="site-main contentfreaks-episodes-page">
+  <div class="content-area">
+    <section class="blog-hero">
+      <div class="blog-hero-bg">
+        <div class="hero-pattern"></div>
+      </div>
+      <div class="blog-hero-particles">
+        <div class="blog-particle"></div><div class="blog-particle"></div><div class="blog-particle"></div><div class="blog-particle"></div><div class="blog-particle"></div><div class="blog-particle"></div>
+      </div>
+      <div class="blog-hero-content">
+        <div class="blog-hero-icon">📖</div>
+        <h1>Blog Articles</h1>
+        <p class="blog-hero-description">コンテンツフリークスの手動投稿ブログ記事。ポッドキャスト分析、レビュー、コラムなど、じっくり読める記事をお届けします。</p>
+        <div class="blog-stats">
+          <div class="blog-stat"><span class="blog-stat-number">${posts.length}</span><span class="blog-stat-label">記事</span></div>
+          <div class="blog-stat"><span class="blog-stat-number">✍️</span><span class="blog-stat-label">執筆記事</span></div>
+          <div class="blog-stat"><span class="blog-stat-number">💡</span><span class="blog-stat-label">分析</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-content">
+      <div class="blog-filters">
+        <button class="blog-filter-btn active" data-filter="all">すべて</button>
+        <button class="blog-filter-btn" data-filter="レビュー">レビュー</button>
+        <button class="blog-filter-btn" data-filter="コラム">コラム</button>
+        <button class="blog-filter-btn" data-filter="分析">分析</button>
+      </div>
+
+      <div class="blog-grid" id="blog-grid">${cards}</div>
+      ${pagination}
+    </div>
   </div>
-</section>
+</main>
 ${renderFooter()}`;
   };
 
@@ -523,18 +562,39 @@ function buildBlogDetails({ posts }) {
   posts.forEach((post) => {
     const tags = (post.tags || []).map((t) => `<span class="blog-tag">#${t}</span>`).join('');
     const html = `${renderHead(post.title)}
-<section class="content-area blog-area">
-  <section class="blog-hero">
-    <div class="blog-hero-bg"><div class="hero-pattern"></div></div>
-    <div class="blog-hero-content"><div class="blog-hero-icon">📖</div><h1>${post.title}</h1><p class="blog-hero-description">${post.excerpt || ''}</p></div>
-  </section>
-  <article class="blog-post-detail">
-    <div class="blog-post-meta"><span class="blog-post-date">${post.formattedDate}</span>${tags ? `<div class="blog-post-tags">${tags}</div>` : ''}</div>
-    ${post.image ? `<div class="blog-post-hero"><img src="${post.image}" alt="${post.title}" loading="eager"></div>` : ''}
-    <div class="blog-post-body">${post.body || post.excerpt || ''}</div>
-    <div class="blog-post-back"><a href="/blog/" class="blog-read-more">ブログ一覧へ戻る</a></div>
-  </article>
-</section>
+<main id="main" class="site-main contentfreaks-episodes-page">
+  <div class="content-area">
+    <section class="blog-hero">
+      <div class="blog-hero-bg"><div class="hero-pattern"></div></div>
+      <div class="blog-hero-content">
+        <div class="blog-hero-icon">📖</div>
+        <h1>${post.title}</h1>
+        <p class="blog-hero-description">${post.excerpt || ''}</p>
+      </div>
+    </section>
+
+    <article class="blog-card blog-detail">
+      <div class="blog-thumbnail">
+        ${post.image ? `<img src="${post.image}" alt="${post.title}" loading="eager">` : '<div class="blog-placeholder">📖</div>'}
+        <div class="blog-category-badge">${post.category}</div>
+        <div class="blog-date-badge">${post.formattedDate}</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-author">ContentFreaks</span>
+          <span class="blog-read-time">読了 ${post.readTime || '3分'}</span>
+        </div>
+        <h3 class="blog-title">${post.title}</h3>
+        <div class="blog-excerpt">${post.excerpt || ''}</div>
+        <div class="blog-body">${post.body || ''}</div>
+        <div class="blog-actions">
+          <a href="/blog/" class="blog-read-more">ブログ一覧へ戻る</a>
+          <div class="blog-tags">${tags}</div>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>
 ${renderFooter()}`;
     writePage(`blog/${post.slug}/index.html`, html);
   });
@@ -546,22 +606,93 @@ function buildProfile({ site, episodes }) {
   const episodeCount = episodes.length;
   const listenerCount = site.listenerCount || 1500;
   const html = `${renderHead('プロフィール')}
-<section class="profile-hero">
-  <div class="profile-hero-bg"><div class="hero-pattern"></div></div>
-  <div class="profile-hero-content">
-    <div class="profile-hero-header">
-      <div class="profile-hero-icon">🎙️</div>
-      <h1 class="profile-hero-title">Meet the Team</h1>
-      <p class="profile-hero-subtitle">コンテンツフリークスを支えるパーソナリティ紹介</p>
-      <div class="profile-hero-stats">
-        <div class="hero-stat"><span class="stat-number">${hostCount}</span><span class="stat-label">パーソナリティ</span></div>
-        <div class="hero-stat"><span class="stat-number">${episodeCount}</span><span class="stat-label">エピソード</span></div>
-        <div class="hero-stat"><span class="stat-number">${listenerCount}+</span><span class="stat-label">リスナー</span></div>
+<main id="main" class="site-main profile-page">
+  <section class="profile-hero">
+    <div class="profile-hero-bg"><div class="hero-pattern"></div></div>
+    <div class="profile-hero-content">
+      <div class="profile-hero-header">
+        <div class="profile-hero-icon">🎙️</div>
+        <h1 class="profile-hero-title">Meet the Team</h1>
+        <p class="profile-hero-subtitle">コンテンツフリークスを支える2人のパーソナリティをご紹介</p>
+        <div class="profile-hero-stats">
+          <div class="hero-stat"><span class="stat-number">${hostCount}</span><span class="stat-label">パーソナリティ</span></div>
+          <div class="hero-stat"><span class="stat-number">${episodeCount}</span><span class="stat-label">エピソード</span></div>
+          <div class="hero-stat"><span class="stat-number">${listenerCount}+</span><span class="stat-label">リスナー</span></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-<section class="profile-details-section"><div class="profile-details-container">${hosts || '<p>ホスト情報がまだありません。</p>'}</div></section>
+  </section>
+
+  <section class="profile-details-section">
+    ${hosts || '<div class="profile-details-container"><p>ホスト情報がまだありません。</p></div>'}
+  </section>
+
+  <section class="team-dynamics-section">
+    <div class="team-dynamics-container">
+      <div class="section-header">
+        <h2 class="section-title">Perfect Chemistry</h2>
+        <p class="section-subtitle">それぞれの個性を活かした絶妙なコンビネーション</p>
+      </div>
+      <div class="dynamics-visual">
+        <div class="host-connection">
+          <div class="host-bubble host1"><div class="bubble-icon">🎙️</div><div class="bubble-content"><h4>みっくん</h4><p>深掘り＆分析</p></div></div>
+          <div class="connection-line"><div class="connection-icon">⚡</div></div>
+          <div class="host-bubble host2"><div class="bubble-icon">🎧</div><div class="bubble-content"><h4>あっきー</h4><p>親しみやすさ</p></div></div>
+        </div>
+      </div>
+      <div class="roles-grid">
+        <div class="role-card featured">
+          <div class="role-header"><div class="role-icon primary">🎙️</div><h3 class="role-title">みっくん</h3><span class="role-badge">Main Host</span></div>
+          <div class="role-description">
+            <p class="role-summary"><strong>司会進行＆深掘り担当</strong></p>
+            <ul class="role-list">
+              <li><span class="list-icon">🔍</span>作品の裏側や制作背景を分析</li>
+              <li><span class="list-icon">🎯</span>話題の引き出しと流れの管理</li>
+              <li><span class="list-icon">🔥</span>熱いトークで盛り上げ役</li>
+            </ul>
+          </div>
+        </div>
+        <div class="role-card featured">
+          <div class="role-header"><div class="role-icon secondary">🎧</div><h3 class="role-title">あっきー</h3><span class="role-badge">Co-Host</span></div>
+          <div class="role-description">
+            <p class="role-summary"><strong>一般目線＆親しみやすさ担当</strong></p>
+            <ul class="role-list">
+              <li><span class="list-icon">👁️</span>リスナーと同じ視点での感想</li>
+              <li><span class="list-icon">😊</span>親しみやすい雰囲気作り</li>
+              <li><span class="list-icon">💭</span>気軽に楽しめるトーク</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="teamwork-highlights">
+    <div class="teamwork-container">
+      <h2 class="section-title">What Makes Us Special</h2>
+      <div class="highlights-grid">
+        <div class="highlight-card"><div class="highlight-icon">🎯</div><h3>絶妙なバランス</h3><p>深い分析と親しみやすさの完璧な組み合わせで、すべてのリスナーが楽しめるコンテンツを提供</p></div>
+        <div class="highlight-card"><div class="highlight-icon">🔄</div><h3>相互補完</h3><p>お互いの強みを活かし、弱みを補い合う理想的なパートナーシップ</p></div>
+        <div class="highlight-card"><div class="highlight-icon">🎨</div><h3>多角的視点</h3><p>異なるバックグラウンドから生まれる多様な視点で、コンテンツを多面的に解析</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-cta-section">
+    <div class="contact-cta-bg"><div class="cta-pattern"></div></div>
+    <div class="contact-cta-container">
+      <div class="contact-cta-content">
+        <div class="cta-icon">💌</div>
+        <h2 class="contact-cta-title">Let's Connect!</h2>
+        <p class="contact-cta-description">番組への感想、取り上げてほしいコンテンツ、ご質問など、どんなメッセージもお待ちしています！</p>
+        <div class="cta-buttons">
+          <a href="/contact/" class="contact-cta-button primary"><span class="btn-icon">✉️</span>お問い合わせ</a>
+          <a href="/episodes/" class="contact-cta-button secondary"><span class="btn-icon">🎧</span>エピソード一覧</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 ${renderFooter()}`;
 
   writePage('profile/index.html', html);
@@ -571,21 +702,112 @@ function buildHistory({ site, episodes }) {
   const episodeCount = episodes.length;
   const listenerCount = site.listenerCount || 1500;
   const html = `${renderHead('コンフリの歩み')}
-<section class="history-hero">
-  <div class="history-hero-bg"><div class="hero-particles"></div><div class="hero-waves"></div></div>
-  <div class="history-hero-content">
-    <div class="history-hero-header">
-      <div class="hero-icon-container"><div class="hero-icon">📖</div></div>
-      <h1 class="history-hero-title">コンテンツフリークスの歩み</h1>
-      <p class="history-hero-subtitle">番組の成長記録をこのページにまとめています。</p>
-      <div class="journey-stats">
-        <div class="journey-stat"><span class="stat-value">${episodeCount}+</span><span class="stat-unit">エピソード</span></div>
-        <div class="journey-stat"><span class="stat-value">${listenerCount}+</span><span class="stat-unit">フォロワー</span></div>
+<main id="main" class="site-main history-page">
+  <section class="history-hero">
+    <div class="history-hero-bg"><div class="hero-particles"></div><div class="hero-waves"></div></div>
+    <div class="history-hero-content">
+      <div class="history-hero-header">
+        <div class="hero-icon-container"><div class="hero-icon">📖</div><div class="hero-icon-glow"></div></div>
+        <h1 class="history-hero-title">Our Journey</h1>
+        <p class="history-hero-subtitle">「カラビナFM」から「コンテンツフリークス」へ<br>2人の成長と番組の進化の軌跡</p>
+        <div class="journey-stats">
+          <div class="journey-stat"><span class="stat-value">${episodeCount}+</span><span class="stat-unit">エピソード</span></div>
+          <div class="journey-stat"><span class="stat-value">200+</span><span class="stat-unit">配信時間</span></div>
+          <div class="journey-stat"><span class="stat-value">${listenerCount}+</span><span class="stat-unit">フォロワー</span></div>
+          <div class="journey-stat"><span class="stat-value">${Math.max(1, Math.floor((Date.now() - new Date('2023-06-01').getTime()) / (1000 * 60 * 60 * 24)))}+</span><span class="stat-unit">継続日数</span></div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-<section class="timeline-section"><div class="timeline-container"><div class="timeline-intro"><h2 class="timeline-title">Timeline</h2><p class="timeline-subtitle">このページは順次アップデート予定です。</p></div><div class="no-episodes"><p>詳細なタイムラインは準備中です。</p></div></div></section>
+  </section>
+
+  <section class="timeline-section">
+    <div class="timeline-container">
+      <div class="timeline-intro">
+        <h2 class="timeline-title">The Story Unfolds</h2>
+        <p class="timeline-subtitle">小さな雑談番組から愛される番組への成長ストーリー</p>
+      </div>
+
+      <div class="year-section" data-year="2023">
+        <div class="year-header">
+          <div class="year-badge"><span class="year-number">2023</span><div class="year-accent"></div></div>
+          <div class="year-info"><h3 class="year-title">The Beginning</h3><p class="year-subtitle">「コンテンツを語る楽しさ」に気付いた一年</p></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item launch">
+            <div class="timeline-marker"><div class="marker-icon">🎙️</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">6月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content">
+              <div class="content-header"><h4 class="timeline-title">ポッドキャスト番組スタート！</h4><span class="timeline-badge launch-badge">Launch</span></div>
+              <p class="timeline-description">みっくんが大学時代の友人・あっきーを誘い、ポッドキャスト番組「カラビナFM」をスタート！当初は「お互いが気になる話題を持ち寄る雑談番組」として始動。</p>
+              <div class="timeline-impact"><span class="impact-label">Impact:</span><span class="impact-text">番組の原点となる記念すべき第一歩</span></div>
+              <div class="artwork-showcase"><img src="https://content-freaks.jp/wp-content/uploads/2024/05/1000017105.jpg" alt="カラビナFM初期アートワーク" class="artwork-image"><div class="artwork-caption"><span class="caption-label">🎨</span><span class="caption-text">カラビナFM初期アートワーク</span></div></div>
+            </div>
+          </div>
+          <div class="timeline-item milestone">
+            <div class="timeline-marker"><div class="marker-icon">🎬</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">7月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">初のコンテンツ回を配信</h4><span class="timeline-badge milestone-badge">Milestone</span></div><p class="timeline-description">初のコンテンツ回となる #4「アニメ『推しの子』は何が凄かったのか？」を配信。コンテンツについて語る楽しさに気付き、番組の方向性が少しずつ固まり始める。</p><div class="timeline-actions"><a href="https://open.spotify.com/episode/1Jz9gurZNUnVGoN8suwWiN?si=r1jmQN8QT--sSQR2Ox9Mdg" class="timeline-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div></div>
+          </div>
+          <div class="timeline-item innovation">
+            <div class="timeline-marker"><div class="marker-icon">📊</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">8〜9月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">初の分析回で新たな構想が誕生</h4><span class="timeline-badge innovation-badge">Innovation</span></div><p class="timeline-description">初の分析回 #10「配信をした感想とデータ分析から見る今後のカラビナFMの進む道」を配信。コンテンツ回の再生数の伸びを受け、みっくんの頭の中に「コンテンツフリークス構想」が生まれる。</p><div class="timeline-actions"><a href="https://open.spotify.com/episode/2KbVneYdYlnpjSwdM2koEt?si=FquwD8KQSs6zezavnpe1cg" class="timeline-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div></div>
+          </div>
+          <div class="timeline-item featured breakthrough">
+            <div class="timeline-marker featured-marker"><div class="marker-icon">⭐</div><div class="marker-pulse featured-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">10月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content featured-content">
+              <div class="content-header"><h4 class="timeline-title">人気エピソード誕生＆リニューアル発表</h4><span class="timeline-badge breakthrough-badge">Breakthrough</span></div>
+              <p class="timeline-description">アニメ「葬送のフリーレン」回（#20）を配信。当時No1の人気エピソードに！<br><br>このタイミングで<strong>番組リニューアルを発表</strong>。「カラビナFM」から「コンテンツフリークス」へと改名！</p>
+              <div class="timeline-actions"><a href="https://open.spotify.com/episode/44KqaSVB1BSEtZm3cYMwLP?si=WeGYuKVrRZygWA9rowc8bg" class="timeline-link featured-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div>
+              <div class="timeline-visual"><div class="artwork-showcase"><img src="https://content-freaks.jp/wp-content/uploads/2024/05/1000014856-1024x1024.png" alt="コンテンツフリークス初期アートワーク" class="artwork-image"><div class="artwork-caption"><span class="caption-label">🎨</span><span class="caption-text">コンテンツフリークス初期アートワーク</span></div></div></div>
+            </div>
+          </div>
+          <div class="timeline-item community">
+            <div class="timeline-marker"><div class="marker-icon">🔬</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">11月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">科学系ポッドキャストの日に初参加</h4><span class="timeline-badge community-badge">Community</span></div><p class="timeline-description">「科学系ポッドキャストの日」に初参加。#25 映画『私は確信する』回を配信。科学系ポッドキャスト「サイエントーク」の大ファンであるみっくん＆あっきー、大歓喜！</p><div class="timeline-actions"><a href="https://open.spotify.com/episode/2doICgnSs0wVdKyqK9BXaE?si=uBKftPsrRJCRkTgo69Wvsw" class="timeline-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div></div>
+          </div>
+          <div class="timeline-item awards">
+            <div class="timeline-marker"><div class="marker-icon">🏆</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">12月</span><span class="date-year">2023</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">2023年コンテンツフリークス大賞を発表</h4><span class="timeline-badge awards-badge">Awards</span></div><p class="timeline-description">「2023年コンテンツフリークス大賞」を発表！</p><div class="awards-list"><div class="award-item grand"><span class="award-icon">🏆</span><span class="award-text">コンテンツフリークス大賞：「PLUTO」</span></div><div class="award-item"><span class="award-icon">🎖</span><span class="award-text">みっくん賞：「私は確信する」</span></div><div class="award-item"><span class="award-icon">🎖</span><span class="award-text">あっきー賞：「ゴジラ-1.0」</span></div></div><div class="timeline-actions"><a href="https://open.spotify.com/episode/3G1nDsYBljNCbUnA496aBp?si=XqUBDXOaRxeIg64cpFmVkA" class="timeline-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="year-section" data-year="2024">
+        <div class="year-header">
+          <div class="year-badge"><span class="year-number">2024</span><div class="year-accent"></div></div>
+          <div class="year-info"><h3 class="year-title">Growth & Evolution</h3><p class="year-subtitle">「コンテンツを語る楽しさ」を痛感した一年</p></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item upgrade">
+            <div class="timeline-marker"><div class="marker-icon">🎵</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">1月</span><span class="date-year">2024</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">番組クオリティ向上プロジェクト</h4><span class="timeline-badge upgrade-badge">Upgrade</span></div><p class="timeline-description">番組のクオリティ向上を目指し、BGM追加・ジングル作成・オリジナルテーマソング制作などに着手。</p></div>
+          </div>
+          <div class="timeline-item featured celebration">
+            <div class="timeline-marker featured-marker"><div class="marker-icon">🎉</div><div class="marker-pulse featured-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">2〜3月</span><span class="date-year">2024</span></div>
+            <div class="timeline-content featured-content"><div class="content-header"><h4 class="timeline-title">50回配信達成＆アートワークリニューアル</h4><span class="timeline-badge celebration-badge">Celebration</span></div><p class="timeline-description">50回配信を達成し、記念としてアートワークをリニューアル！</p><div class="timeline-visual"><div class="artwork-showcase"><img src="https://content-freaks.jp/wp-content/uploads/2024/05/1000015915-1024x1024.png" alt="最新アートワーク" class="artwork-image"><div class="artwork-caption"><span class="caption-label">🎨</span><span class="caption-text">50回記念アートワーク</span></div></div></div></div>
+          </div>
+          <div class="timeline-item collaboration">
+            <div class="timeline-marker"><div class="marker-icon">🎙</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">4月</span><span class="date-year">2024</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">初のコラボ回を配信</h4><span class="timeline-badge collaboration-badge">Collaboration</span></div><p class="timeline-description">初のコラボ回を配信！ゲストに「平成男女のイドバタラジオ」の"みな"さんを迎え、熱いトークを展開！</p><div class="timeline-actions"><a href="https://open.spotify.com/episode/661RG21Jp2Rs7PFggQ4nXE?si=1Q6tg0v4RaydL_krSec_sQ" class="timeline-link" target="_blank" rel="noopener"><span class="link-icon">▶</span>エピソードを聴く</a></div></div>
+          </div>
+          <div class="timeline-item collaboration">
+            <div class="timeline-marker"><div class="marker-icon">🎙</div><div class="marker-pulse"></div></div>
+            <div class="timeline-date"><span class="date-month">5月</span><span class="date-year">2024</span></div>
+            <div class="timeline-content"><div class="content-header"><h4 class="timeline-title">コラボ回第2弾</h4><span class="timeline-badge collaboration-badge">Collaboration</span></div><p class="timeline-description">コラボ回を再び配信！ゲストに「ひよっこ研究者のさばいばる日記」の"はち"さんを迎える。</p></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
 ${renderFooter()}`;
 
   writePage('history/index.html', html);
