@@ -482,6 +482,9 @@ ${renderFooter()}`;
 
 function buildBlog({ posts }) {
   const pages = chunk(posts, BLOG_PAGE_SIZE);
+  if (pages.length === 0) {
+    pages.push([]); // データがなくても一覧ページを出力し404を防ぐ
+  }
   const makeHtml = (pageItems, pageNumber) => {
     const cards = pageItems.length ? pageItems.map(renderBlogCard).join('\n') : '<div class="no-blog-posts"><p>ブログ記事が見つかりませんでした。</p><p>新しい記事を追加してください。</p></div>';
     const pagination = pages.length > 1
@@ -515,6 +518,79 @@ ${renderFooter()}`;
   });
 }
 
+function buildBlogDetails({ posts }) {
+  if (!posts.length) return;
+  posts.forEach((post) => {
+    const tags = (post.tags || []).map((t) => `<span class="blog-tag">#${t}</span>`).join('');
+    const html = `${renderHead(post.title)}
+<section class="content-area blog-area">
+  <section class="blog-hero">
+    <div class="blog-hero-bg"><div class="hero-pattern"></div></div>
+    <div class="blog-hero-content"><div class="blog-hero-icon">📖</div><h1>${post.title}</h1><p class="blog-hero-description">${post.excerpt || ''}</p></div>
+  </section>
+  <article class="blog-post-detail">
+    <div class="blog-post-meta"><span class="blog-post-date">${post.formattedDate}</span>${tags ? `<div class="blog-post-tags">${tags}</div>` : ''}</div>
+    ${post.image ? `<div class="blog-post-hero"><img src="${post.image}" alt="${post.title}" loading="eager"></div>` : ''}
+    <div class="blog-post-body">${post.body || post.excerpt || ''}</div>
+    <div class="blog-post-back"><a href="/blog/" class="blog-read-more">ブログ一覧へ戻る</a></div>
+  </article>
+</section>
+${renderFooter()}`;
+    writePage(`blog/${post.slug}/index.html`, html);
+  });
+}
+
+function buildProfile({ site, episodes }) {
+  const hosts = renderHosts(site.hosts || []);
+  const hostCount = (site.hosts || []).length;
+  const episodeCount = episodes.length;
+  const listenerCount = site.listenerCount || 1500;
+  const html = `${renderHead('プロフィール')}
+<section class="profile-hero">
+  <div class="profile-hero-bg"><div class="hero-pattern"></div></div>
+  <div class="profile-hero-content">
+    <div class="profile-hero-header">
+      <div class="profile-hero-icon">🎙️</div>
+      <h1 class="profile-hero-title">Meet the Team</h1>
+      <p class="profile-hero-subtitle">コンテンツフリークスを支えるパーソナリティ紹介</p>
+      <div class="profile-hero-stats">
+        <div class="hero-stat"><span class="stat-number">${hostCount}</span><span class="stat-label">パーソナリティ</span></div>
+        <div class="hero-stat"><span class="stat-number">${episodeCount}</span><span class="stat-label">エピソード</span></div>
+        <div class="hero-stat"><span class="stat-number">${listenerCount}+</span><span class="stat-label">リスナー</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="profile-details-section"><div class="profile-details-container">${hosts || '<p>ホスト情報がまだありません。</p>'}</div></section>
+${renderFooter()}`;
+
+  writePage('profile/index.html', html);
+}
+
+function buildHistory({ site, episodes }) {
+  const episodeCount = episodes.length;
+  const listenerCount = site.listenerCount || 1500;
+  const html = `${renderHead('コンフリの歩み')}
+<section class="history-hero">
+  <div class="history-hero-bg"><div class="hero-particles"></div><div class="hero-waves"></div></div>
+  <div class="history-hero-content">
+    <div class="history-hero-header">
+      <div class="hero-icon-container"><div class="hero-icon">📖</div></div>
+      <h1 class="history-hero-title">コンテンツフリークスの歩み</h1>
+      <p class="history-hero-subtitle">番組の成長記録をこのページにまとめています。</p>
+      <div class="journey-stats">
+        <div class="journey-stat"><span class="stat-value">${episodeCount}+</span><span class="stat-unit">エピソード</span></div>
+        <div class="journey-stat"><span class="stat-value">${listenerCount}+</span><span class="stat-unit">フォロワー</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="timeline-section"><div class="timeline-container"><div class="timeline-intro"><h2 class="timeline-title">Timeline</h2><p class="timeline-subtitle">このページは順次アップデート予定です。</p></div><div class="no-episodes"><p>詳細なタイムラインは準備中です。</p></div></div></section>
+${renderFooter()}`;
+
+  writePage('history/index.html', html);
+}
+
 function buildStaticSite() {
   rimraf(DIST);
   ensureDir(DIST);
@@ -539,6 +615,9 @@ function buildStaticSite() {
   buildEpisodeList({ episodes });
   buildEpisodeDetails({ episodes });
   buildBlog({ posts });
+  buildBlogDetails({ posts });
+  buildProfile({ site, episodes });
+  buildHistory({ site, episodes });
 
   console.log(`✅ Build completed. Episodes: ${episodes.length}, Blogs: ${posts.length}`);
 }
