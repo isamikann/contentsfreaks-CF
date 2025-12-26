@@ -183,41 +183,41 @@ Version: 2.0.0
 
 
 
-    /* フロントページ専用カラー - 新色彩フロー */
-    /* ヒーローセクション（現状維持） */
-    --front-hero-bg: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    /* フロントページ専用カラー - WordPress版に合わせて再調整 */
+    /* ヒーローセクション: ダーク基調にブランドイエローを乗せる */
+    --front-hero-bg: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     --front-hero-text: var(--white);
-    --front-hero-particle: rgba(255, 255, 255, 0.6);
-    --front-hero-grain: rgba(255, 255, 255, 0.1);
-    --front-hero-title-gradient: linear-gradient(45deg, #ffffff, #f0f8ff);
-    --front-hero-artwork-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    --front-hero-artwork-glow: rgba(255, 255, 255, 0.15);
+    --front-hero-particle: rgba(247, 255, 11, 0.35);
+    --front-hero-grain: rgba(247, 255, 11, 0.12);
+    --front-hero-title-gradient: linear-gradient(90deg, #ffffff, #ffffff);
+    --front-hero-artwork-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    --front-hero-artwork-glow: rgba(247, 255, 11, 0.15);
 
-    /* 最新エピソードセクション - ヒーローから自然に続く薄い紫〜白 */
-    --latest-episode-bg: linear-gradient(135deg, #f3f0ff 0%, #ffffff 100%);
+    /* 最新エピソードセクション: 白〜ライトグレーにブランドアクセント */
+    --latest-episode-bg: linear-gradient(135deg, #f8f9fb 0%, #ffffff 100%);
     --latest-episode-card-bg: var(--white);
-    --latest-episode-card-shadow: 0 20px 60px rgba(102, 126, 234, 0.08);
-    --latest-episode-badge-bg: linear-gradient(45deg, #8b7cf8, #667eea);
-    --latest-episode-title: #4c5270;
-    --latest-episode-text: #6b7088;
-    --latest-episode-btn-primary: linear-gradient(45deg, #667eea, #764ba2);
-    --latest-episode-btn-primary-shadow: rgba(102, 126, 234, 0.25);
-    --latest-episode-btn-secondary: rgba(102, 126, 234, 0.08);
-    --latest-episode-btn-secondary-text: #667eea;
-    --latest-episode-title-gradient: linear-gradient(135deg, #667eea, #764ba2);
+    --latest-episode-card-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    --latest-episode-badge-bg: linear-gradient(45deg, #f7ff0b, #ff6b35);
+    --latest-episode-title: #2d3748;
+    --latest-episode-text: #4a5568;
+    --latest-episode-btn-primary: linear-gradient(45deg, #f7ff0b, #ff6b35);
+    --latest-episode-btn-primary-shadow: rgba(0, 0, 0, 0.16);
+    --latest-episode-btn-secondary: rgba(247, 255, 11, 0.15);
+    --latest-episode-btn-secondary-text: #1a1a1a;
+    --latest-episode-title-gradient: linear-gradient(135deg, #f7ff0b, #ff6b35);
 
-    /* 最近のエピソードセクション - 白ベース+薄いブルーグレー */
-    --recent-episodes-bg: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    /* 最近のエピソードセクション: WPのライトグレー基調に合わせる */
+    --recent-episodes-bg: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
     --recent-episodes-card-bg: var(--white);
-    --recent-episodes-card-border: #e2e8f0;
-    --recent-episodes-card-shadow: 0 10px 25px rgba(71, 85, 105, 0.08);
-    --recent-episodes-title: #334155;
-    --recent-episodes-text: #64748b;
-    --recent-episodes-meta: #94a3b8;
-    --recent-episodes-title-gradient: linear-gradient(135deg, #334155, #64748b);
-    --recent-episodes-btn-primary: linear-gradient(45deg, #334155, #64748b);
-    --recent-episodes-btn-primary-shadow: rgba(51, 65, 85, 0.25);
-    --recent-episodes-btn-secondary: rgba(51, 65, 85, 0.08);
+    --recent-episodes-card-border: #e5e7eb;
+    --recent-episodes-card-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    --recent-episodes-title: #2d3748;
+    --recent-episodes-text: #4a5568;
+    --recent-episodes-meta: #718096;
+    --recent-episodes-title-gradient: linear-gradient(135deg, #2d3748, #4a5568);
+    --recent-episodes-btn-primary: linear-gradient(45deg, #f7ff0b, #ff6b35);
+    --recent-episodes-btn-primary-shadow: rgba(0, 0, 0, 0.18);
+    --recent-episodes-btn-secondary: rgba(247, 255, 11, 0.12);
     --recent-episodes-btn-secondary-text: #334155;
 
     /* ホスト紹介セクション - ソフトベージュ〜薄いグリーン */
