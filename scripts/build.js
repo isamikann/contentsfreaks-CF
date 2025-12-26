@@ -142,199 +142,51 @@ function renderHead(title, description) {
   <link rel="stylesheet" href="/loading.css">
   <link rel="stylesheet" href="/microinteractions.css">
   <style>
-    :root {
-      --header-height: 70px;
-    }
-    body {
-      padding-top: var(--header-height);
-      margin: 0;
-    }
-    body.home {
-      padding-top: 0;
-    }
-    body.home .podcast-hero {
-      padding-top: calc(var(--header-height) + 20px);
-    }
-    .minimal-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--header-height);
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-      z-index: 1000;
-      transition: all 0.3s ease;
-    }
-    .minimal-header.scrolled {
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    .header-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-    .brand-home {
-      display: flex;
-      align-items: center;
-    }
-    .brand-link {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-    .brand-icon {
-      font-size: 1.6rem;
-      line-height: 1;
-    }
-    .brand-text {
-      font-size: 1.1rem;
-    }
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .desktop-nav .nav-link {
-      text-decoration: none;
-      color: #1a1a1a;
-      font-weight: 600;
-      padding: 0.5rem 0.75rem;
-      border-radius: 999px;
-      transition: all 0.2s ease;
-    }
-    .desktop-nav .nav-link:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 10px;
-      padding: 0.5rem;
-      width: 44px;
-      height: 44px;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-    }
-    .menu-icon-line {
-      width: 100%;
-      height: 2px;
-      background: #1a1a1a;
-      border-radius: 1px;
-    }
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(4px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 1001;
-    }
-    .nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .mobile-slide-nav {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: min(400px, 85vw);
-      background: #fff;
-      transform: translateX(100%);
-      transition: transform 0.35s ease;
-      z-index: 1002;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -10px 0 30px rgba(0,0,0,0.12);
-    }
-    .mobile-slide-nav.open {
-      transform: translateX(0);
-    }
-    .mobile-nav-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.5rem;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-    .mobile-close {
-      background: none;
-      border: none;
-      font-size: 1.4rem;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-    }
-    .mobile-nav-links {
-      list-style: none;
-      margin: 0;
-      padding: 1rem 0;
-      flex: 1;
-      overflow-y: auto;
-    }
-    .mobile-nav-links li a {
-      display: block;
-      padding: 1rem 1.5rem;
-      text-decoration: none;
-      color: #222;
-      font-weight: 600;
-    }
-    .mobile-nav-links li a:hover {
-      background: rgba(0,0,0,0.04);
-    }
-    .mobile-nav-footer {
-      padding: 1.5rem;
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
-    body.nav-open {
-      overflow: hidden;
-    }
-    @media (max-width: 960px) {
-      :root { --header-height: 60px; }
-      .desktop-nav { display: none; }
-      .menu-toggle { display: inline-flex; }
-      .header-container { padding: 0 1.25rem; }
-    }
-    @media (max-width: 480px) {
-      :root { --header-height: 55px; }
-      .header-container { padding: 0 1rem; }
-      .mobile-slide-nav { width: 100vw; }
-    }
-    @media (prefers-color-scheme: dark) {
-      .minimal-header { background: rgba(26,26,26,0.8); border-bottom-color: rgba(255,255,255,0.08); }
-      .minimal-header.scrolled { background: rgba(26,26,26,0.9); }
-      .desktop-nav .nav-link { color: #f2f2f2; }
-      .desktop-nav .nav-link:hover { background: rgba(255,255,255,0.08); }
-      .menu-icon-line { background: #f2f2f2; }
-      .mobile-slide-nav { background: #1a1a1a; }
-      .mobile-nav-links li a { color: #f2f2f2; }
-      .mobile-nav-links li a:hover { background: rgba(255,255,255,0.08); }
-      .mobile-nav-footer { border-top-color: rgba(255,255,255,0.1); }
-    }
+    :root { --header-height: 70px; }
+    body { padding-top: var(--header-height); margin: 0; }
+    body.home { padding-top: 0; }
+    body.home .podcast-hero { padding-top: calc(var(--header-height) + 20px); }
+    .minimal-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-height); background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); z-index: 1000; transition: all 0.3s ease; }
+    .minimal-header.scrolled { background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    .header-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+    .brand-home { display: flex; align-items: center; }
+    .brand-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.75rem; font-weight: 600; letter-spacing: -0.02em; }
+    .brand-icon { font-size: 1.6rem; line-height: 1; }
+    .brand-text { font-size: 1.1rem; }
+    .menu-trigger { display: flex; align-items: center; }
+    .minimal-hamburger { background: none; border: none; cursor: pointer; padding: 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; height: 44px; width: 44px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.08); transition: transform 0.2s ease; }
+    .minimal-hamburger:hover { transform: translateY(-1px); }
+    .hamburger-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; width: 20px; height: 14px; }
+    .hamburger-icon .line { width: 100%; height: 2px; background: #1a1a1a; border-radius: 1px; transition: all 0.3s ease; transform-origin: center; }
+    .minimal-hamburger.active .line-1 { transform: rotate(45deg) translate(5px, 5px); }
+    .minimal-hamburger.active .line-2 { opacity: 0; transform: scaleX(0); }
+    .minimal-hamburger.active .line-3 { transform: rotate(-45deg) translate(5px, -5px); }
+    .menu-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1001; }
+    .menu-overlay.active { opacity: 1; visibility: visible; }
+    .slide-menu-container { position: fixed; top: 0; right: 0; bottom: 0; width: min(400px, 85vw); background: #ffffff; transform: translateX(100%); transition: transform 0.35s ease; z-index: 1002; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12); }
+    .slide-menu-container.active { transform: translateX(0); }
+    .slide-menu-content { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+    .menu-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; }
+    .menu-brand { display: flex; align-items: center; gap: 0.75rem; }
+    .menu-brand-icon { font-size: 1.5rem; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .menu-brand-name { font-size: 1.25rem; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; }
+    .menu-close { background: none; border: none; cursor: pointer; padding: 0.5rem; width: 32px; height: 32px; border-radius: 50%; position: relative; }
+    .menu-close:hover { background: rgba(0,0,0,0.05); }
+    .close-line { position: absolute; width: 16px; height: 2px; background: #666; border-radius: 1px; }
+    .close-line:first-child { transform: rotate(45deg); }
+    .close-line:last-child { transform: rotate(-45deg); }
+    .menu-navigation { flex: 1; overflow-y: auto; padding: 1rem 0; }
+    .nav-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+    .nav-item { display: block; }
+    .nav-link { display: flex; align-items: center; padding: 1rem 1.5rem; text-decoration: none; color: #333; font-weight: 600; transition: all 0.2s ease; }
+    .nav-link:hover { background: rgba(0,0,0,0.03); color: #1a1a1a; }
+    .nav-icon { font-size: 1.2rem; margin-right: 1rem; width: 24px; text-align: center; }
+    .menu-footer { padding: 1.5rem; border-top: 1px solid rgba(0,0,0,0.08); background: rgba(0,0,0,0.02); }
+    .menu-footer .pill-button { width: 100%; text-align: center; display: inline-block; }
+    body.nav-open { overflow: hidden; }
+    @media (max-width: 960px) { :root { --header-height: 60px; } .header-container { padding: 0 1.25rem; } }
+    @media (max-width: 480px) { :root { --header-height: 55px; } .header-container { padding: 0 1rem; } .slide-menu-container { width: 100vw; } }
+    @media (prefers-color-scheme: dark) { .minimal-header { background: rgba(26,26,26,0.8); border-bottom-color: rgba(255,255,255,0.08); } .minimal-header.scrolled { background: rgba(26,26,26,0.9); } .hamburger-icon .line { background: #f2f2f2; } .slide-menu-container { background: #1a1a1a; } .nav-link { color: #e0e0e0; } .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; } .menu-footer { border-top-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); } .close-line { background: #999; } }
   </style>
 </head>
 <body>
@@ -349,66 +201,69 @@ function renderHead(title, description) {
         </div>
       </a>
     </div>
-    <nav class="header-nav desktop-nav" aria-label="メインメニュー">
-      <a href="/" class="nav-link">ホーム</a>
-      <a href="/episodes/" class="nav-link">エピソード</a>
-      <a href="/blog/" class="nav-link">ブログ</a>
-      <a href="/profile/" class="nav-link">プロフィール</a>
-      <a href="/history/" class="nav-link">コンフリの歩み</a>
-    </nav>
-    <div class="header-actions">
-      <a class="pill-button" href="/episodes/">最新を聴く</a>
-      <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav"><span class="menu-icon-line"></span><span class="menu-icon-line"></span><span class="menu-icon-line"></span><span class="sr-only">メニュー</span></button>
+    <div class="menu-trigger">
+      <button class="minimal-hamburger" aria-label="メニューを開く" aria-expanded="false" aria-controls="minimal-menu">
+        <span class="hamburger-icon">
+          <span class="line line-1"></span>
+          <span class="line line-2"></span>
+          <span class="line line-3"></span>
+        </span>
+      </button>
     </div>
   </div>
 </header>
-<div class="nav-overlay" aria-hidden="true"></div>
-<nav id="mobile-nav" class="mobile-slide-nav" aria-label="モバイルメニュー">
-  <div class="mobile-nav-header">
-    <div class="brand-home">
-      <a class="brand-link" href="/">
-        <div class="brand-container">
-          <div class="brand-icon">🎙️</div>
-          <span class="brand-text">ContentFreaks</span>
-        </div>
-      </a>
+<div class="menu-overlay" aria-hidden="true"></div>
+<nav id="minimal-menu" class="slide-menu-container" role="navigation" aria-label="メインメニュー">
+  <div class="slide-menu-content">
+    <div class="menu-header">
+      <div class="menu-brand">
+        <div class="menu-brand-icon">🎙️</div>
+        <span class="menu-brand-name">ContentFreaks</span>
+      </div>
+      <button class="menu-close" aria-label="メニューを閉じる">
+        <span class="close-line"></span>
+        <span class="close-line"></span>
+      </button>
     </div>
-    <button class="mobile-close" aria-label="メニューを閉じる">×</button>
-  </div>
-  <ul class="mobile-nav-links">
-    <li><a href="/">ホーム</a></li>
-    <li><a href="/episodes/">エピソード</a></li>
-    <li><a href="/blog/">ブログ</a></li>
-    <li><a href="/profile/">プロフィール</a></li>
-    <li><a href="/history/">コンフリの歩み</a></li>
-  </ul>
-  <div class="mobile-nav-footer">
-    <a class="pill-button" href="/episodes/">最新を聴く</a>
+    <div class="menu-navigation">
+      <ul class="nav-list">
+        <li class="nav-item"><a class="nav-link" href="/"><span class="nav-icon">🏠</span><span class="nav-text">ホーム</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="/episodes/"><span class="nav-icon">🎧</span><span class="nav-text">エピソード</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog/"><span class="nav-icon">📖</span><span class="nav-text">ブログ</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="/profile/"><span class="nav-icon">👥</span><span class="nav-text">プロフィール</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="/history/"><span class="nav-icon">📜</span><span class="nav-text">コンフリの歩み</span></a></li>
+      </ul>
+    </div>
+    <div class="menu-footer">
+      <a class="pill-button" href="/episodes/">最新を聴く</a>
+    </div>
   </div>
 </nav>
 <script>
   (() => {
     const header = document.querySelector('.minimal-header');
     const toggle = () => {
-      const nav = document.getElementById('mobile-nav');
-      const overlay = document.querySelector('.nav-overlay');
-      const button = document.querySelector('.menu-toggle');
+      const nav = document.getElementById('minimal-menu');
+      const overlay = document.querySelector('.menu-overlay');
+      const button = document.querySelector('.minimal-hamburger');
       if (!nav || !overlay || !button) return;
-      const isOpen = nav.classList.contains('open');
-      nav.classList.toggle('open', !isOpen);
+      const isOpen = nav.classList.contains('active');
+      nav.classList.toggle('active', !isOpen);
       overlay.classList.toggle('active', !isOpen);
       document.body.classList.toggle('nav-open', !isOpen);
+      button.classList.toggle('active', !isOpen);
       button.setAttribute('aria-expanded', String(!isOpen));
     };
 
     const closeMenu = () => {
-      const nav = document.getElementById('mobile-nav');
-      const overlay = document.querySelector('.nav-overlay');
-      const button = document.querySelector('.menu-toggle');
+      const nav = document.getElementById('minimal-menu');
+      const overlay = document.querySelector('.menu-overlay');
+      const button = document.querySelector('.minimal-hamburger');
       if (!nav || !overlay || !button) return;
-      nav.classList.remove('open');
+      nav.classList.remove('active');
       overlay.classList.remove('active');
       document.body.classList.remove('nav-open');
+      button.classList.remove('active');
       button.setAttribute('aria-expanded', 'false');
     };
 
@@ -418,21 +273,17 @@ function renderHead(title, description) {
     };
 
     document.addEventListener('DOMContentLoaded', () => {
-      const trigger = document.querySelector('.menu-toggle');
-      const overlay = document.querySelector('.nav-overlay');
-      const close = document.querySelector('.mobile-close');
-      const navLinks = document.querySelectorAll('.mobile-slide-nav a');
+      const trigger = document.querySelector('.minimal-hamburger');
+      const overlay = document.querySelector('.menu-overlay');
+      const close = document.querySelector('.menu-close');
+      const navLinks = document.querySelectorAll('.slide-menu-container .nav-link');
       trigger?.addEventListener('click', toggle);
       overlay?.addEventListener('click', closeMenu);
       close?.addEventListener('click', closeMenu);
       navLinks.forEach((link) => link.addEventListener('click', closeMenu));
       window.addEventListener('scroll', handleScroll, { passive: true });
       handleScroll();
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeMenu();
-        }
-      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
     });
   })();
 </script>
