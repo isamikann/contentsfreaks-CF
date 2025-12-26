@@ -397,8 +397,8 @@ Version: 2.0.0
     --description: 0.95rem;
     --caption: 0.875rem;
 
-    /* メタ情報 */
-    --meta-primary: 0.85rem;
+    /* メタ情報（WP準拠: font-size-sm=0.875rem） */
+    --meta-primary: 0.875rem;
     --meta-secondary: 0.8rem;
     --meta-small: 0.75rem;
 
@@ -410,7 +410,7 @@ Version: 2.0.0
     --mobile-hero-title: clamp(1.8rem, 4vw, 2.5rem);
     --mobile-card-title: 1.125rem;
     --mobile-body-text: 0.95rem;
-    --mobile-meta: 0.8rem;
+    --mobile-meta: 0.875rem;
 }
 
 /* ===== ベーススタイル ===== */
