@@ -408,7 +408,7 @@ Version: 2.0.0
 
     /* モバイル用フォントサイズ */
     --mobile-hero-title: clamp(1.8rem, 4vw, 2.5rem);
-    --mobile-card-title: 1.05rem;
+    --mobile-card-title: 1.125rem;
     --mobile-body-text: 0.95rem;
     --mobile-meta: 0.8rem;
 }
@@ -770,7 +770,7 @@ button:focus-visible {
 @media (max-width: 480px) {
     :root {
         --hero-title: var(--mobile-hero-title);
-        --card-title: 0.95rem;
+        --card-title: var(--mobile-card-title);
         --body-text: 0.9rem;
         --meta-primary: 0.75rem;
         --meta-secondary: 0.7rem;
