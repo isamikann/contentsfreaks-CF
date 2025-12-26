@@ -401,7 +401,6 @@ function renderEpisodeCard(ep) {
         ${ep.thumbnail ? `<img src="${ep.thumbnail}" alt="${ep.title}" loading="lazy">` : '<div class="default-thumbnail"><div style="background: linear-gradient(135deg, #f7ff0b, #ff6b35); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; border-radius: 12px;">🎙️</div></div>'}
       </a>
     </div>
-    ${ep.duration ? `<div class="episode-duration-overlay">${ep.duration}</div>` : ''}
   </div>
   <div class="episode-card-content">
     <div class="episode-meta">
