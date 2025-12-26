@@ -753,6 +753,15 @@ function buildProfile({ site, episodes }) {
   const hostCount = 2;
   const episodeCount = episodes.length;
   const listenerCount = site.listenerCount || 1500;
+  const hostsData = site.hosts || [];
+  const host1 = hostsData[0] || {};
+  const host2 = hostsData[1] || {};
+  const host1Avatar = host1.image
+    ? `<img src="${host1.image}" alt="${host1.name || 'みっくん'}" class="host-avatar-image">`
+    : '<div class="avatar-placeholder primary-gradient"><span class="avatar-icon">🎙️</span></div>';
+  const host2Avatar = host2.image
+    ? `<img src="${host2.image}" alt="${host2.name || 'あっきー'}" class="host-avatar-image">`
+    : '<div class="avatar-placeholder secondary-gradient"><span class="avatar-icon">🎧</span></div>';
   const html = `${renderHead('プロフィール')}
 <main id="main-content" class="site-main profile-page">
   <section class="profile-hero">
@@ -776,18 +785,18 @@ function buildProfile({ site, episodes }) {
       <div class="host-profile-card host-card-primary">
         <div class="host-profile-header">
           <div class="host-profile-avatar">
-            <div class="avatar-placeholder primary-gradient"><span class="avatar-icon">🎙️</span></div>
+              ${host1Avatar}
             <div class="avatar-badge">Host</div>
           </div>
           <div class="host-profile-info">
-            <h2 class="host-name">みっくん</h2>
-            <p class="host-role">メインパーソナリティ</p>
+              <h2 class="host-name">${host1.name || 'みっくん'}</h2>
+              <p class="host-role">${host1.role || 'メインパーソナリティ'}</p>
             <div class="host-tags"><span class="host-tag primary">コンテンツフリーク</span><span class="host-tag secondary">司会進行担当</span><span class="host-tag accent">エンジニア</span></div>
             <div class="host-social-links"></div>
           </div>
         </div>
         <div class="host-profile-content">
-          <div class="host-description"><p>コンテンツとポッドキャストをこよなく愛する、メーカー勤務のアプリエンジニア。マンガ・アニメ・ドラマ・映画・小説…ジャンルを問わず楽しむ雑食系クリエイターウォッチャー。</p></div>
+            <div class="host-description"><p>${host1.bio || 'コンテンツとポッドキャストをこよなく愛する、メーカー勤務のアプリエンジニア。マンガ・アニメ・ドラマ・映画・小説…ジャンルを問わず楽しむ雑食系クリエイターウォッチャー。'}</p></div>
           <div class="host-details-grid">
             <div class="host-detail"><div class="detail-icon">🎙</div><h4 class="detail-title">番組での役割</h4><p class="detail-content">作品の裏側を深掘り＆司会進行を担当！気になるポイントを引き出しながら、熱く語ります。</p></div>
             <div class="host-detail"><div class="detail-icon">📌</div><h4 class="detail-title">推しキャラタイプ</h4><p class="detail-content">「憂いはあるが、行動はポジティブ」なキャラクターに心惹かれがち。</p></div>
@@ -800,18 +809,18 @@ function buildProfile({ site, episodes }) {
       <div class="host-profile-card host-card-secondary">
         <div class="host-profile-header">
           <div class="host-profile-avatar">
-            <div class="avatar-placeholder secondary-gradient"><span class="avatar-icon">🎧</span></div>
+              ${host2Avatar}
             <div class="avatar-badge">Co-Host</div>
           </div>
           <div class="host-profile-info">
-            <h2 class="host-name">あっきー</h2>
-            <p class="host-role">サブパーソナリティ</p>
+              <h2 class="host-name">${host2.name || 'あっきー'}</h2>
+              <p class="host-role">${host2.role || 'サブパーソナリティ'}</p>
             <div class="host-tags"><span class="host-tag primary">コンテンツ見習い</span><span class="host-tag secondary">一般目線担当</span><span class="host-tag accent">エンジニア</span></div>
             <div class="host-social-links"></div>
           </div>
         </div>
         <div class="host-profile-content">
-          <div class="host-description"><p>コンテンツをほどよく楽しむ、メーカー勤務のハードエンジニア。主にアニメを中心に視聴し、ドラマは「コンテンツフリークス」をきっかけにハマり中。</p></div>
+            <div class="host-description"><p>${host2.bio || 'コンテンツをほどよく楽しむ、メーカー勤務のハードエンジニア。主にアニメを中心に視聴し、ドラマは「コンテンツフリークス」をきっかけにハマり中。'}</p></div>
           <div class="host-details-grid">
             <div class="host-detail"><div class="detail-icon">🎙</div><h4 class="detail-title">番組での役割</h4><p class="detail-content">一般目線の感想を担当し、親しみやすさをプラス！リスナーと同じ視点で語ります。</p></div>
             <div class="host-detail"><div class="detail-icon">📌</div><h4 class="detail-title">推しキャラタイプ</h4><p class="detail-content">「一周回って落ち着いた強者」なキャラクターに魅力を感じがち。</p></div>
