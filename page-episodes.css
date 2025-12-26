@@ -344,17 +344,7 @@ body {
 }
 
 .episode-duration-overlay {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(255,255,255,0.95);
-    color: var(--episodes-card-title);
-    padding: 0.6rem 1.2rem;
-    border-radius: 25px;
-    font-weight: 700;
-    font-size: var(--meta-secondary);
-    backdrop-filter: blur(10px);
-    z-index: 2;
+    display: none !important; /* 時間バッジを非表示に統一 */
 }
 
 .episode-card-content {
@@ -409,6 +399,12 @@ body {
     border: none;
     box-shadow: none;
     outline: none;
+}
+
+.episode-title a:focus,
+.episode-title a:focus-visible {
+    outline: none;
+    box-shadow: none;
 }
 
 .episode-title a:hover {
@@ -837,11 +833,7 @@ body {
     }
     
     .episode-duration-overlay {
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.4rem 0.8rem;
-        font-size: 0.75rem;
-        border-radius: 20px;
+        display: none !important;
     }
     
     .episode-card-content {
@@ -1017,11 +1009,7 @@ body {
     }
     
     .episode-duration-overlay {
-        top: 0.3rem;
-        right: 0.3rem;
-        padding: 0.3rem 0.6rem;
-        font-size: 0.7rem;
-        border-radius: 15px;
+        display: none !important;
     }
     
     .episode-card-content {
