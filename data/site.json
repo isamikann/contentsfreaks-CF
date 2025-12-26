@@ -1,5 +1,7 @@
 {
   "listenerCount": 2000,
+  "heroImage": "/assets/images/hero-main.jpg",
+  "heroAlt": "ContentFreaks ポッドキャスト アートワーク",
   "platforms": [
     {
       "key": "spotify",
@@ -25,7 +27,7 @@
       "name": "みっくん",
       "role": "司会進行",
       "bio": "作品の裏側を深掘り＆司会進行担当。メーカー勤務のアプリエンジニア。「憂いはあるが、行動はポジティブ」なキャラクターに心惹かれがち。",
-      "image": "",
+      "image": "/assets/images/host-mikkun.png",
       "social": {
         "twitter": "",
         "youtube": ""
@@ -35,7 +37,7 @@
       "name": "あっきー",
       "role": "コホスト",
       "bio": "一般目線の感想担当、親しみやすさをプラス。メーカー勤務のハードエンジニア。「一周回って落ち着いた強者」なキャラクターに魅力を感じがち。",
-      "image": "",
+      "image": "/assets/images/host-akki.png",
       "social": {
         "twitter": "",
         "youtube": ""

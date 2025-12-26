@@ -25,7 +25,8 @@ const STATIC_ASSETS = [
   'page-works.css',
   'css-async.js',
   'microinteractions.js',
-  'page-works.js'
+  'page-works.js',
+  'assets/images'
 ];
 
 function readJson(file, fallback) {
@@ -45,6 +46,19 @@ function rimraf(target) {
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
+}
+
+function copyPath(src, dest) {
+  const stat = fs.statSync(src);
+  if (stat.isDirectory()) {
+    ensureDir(dest);
+    for (const entry of fs.readdirSync(src)) {
+      copyPath(path.join(src, entry), path.join(dest, entry));
+    }
+    return;
+  }
+  ensureDir(path.dirname(dest));
+  fs.copyFileSync(src, dest);
 }
 
 function formatDate(value) {
@@ -109,8 +123,7 @@ function copyAssets() {
   STATIC_ASSETS.forEach((file) => {
     const src = path.join(ROOT, file);
     if (fs.existsSync(src)) {
-      ensureDir(path.dirname(path.join(DIST, file)));
-      fs.copyFileSync(src, path.join(DIST, file));
+      copyPath(src, path.join(DIST, file));
     }
   });
 }
@@ -454,6 +467,8 @@ function buildHome({ episodes, site }) {
   const latest = episodes[0];
   const recent = episodes.slice(1, 4);
   const listenerCount = site.listenerCount || 1500;
+  const heroImage = site.heroImage || '';
+  const heroAlt = site.heroAlt || 'ContentFreaks';
   const platforms = renderPlatforms(site.platforms || []);
   const hosts = renderHosts(site.hosts || []);
 
@@ -476,6 +491,10 @@ function buildHome({ episodes, site }) {
 
   const recentList = recent.map(renderEpisodeCard).join('\n');
 
+  const heroArtwork = heroImage
+    ? `<div class="podcast-artwork"><img src="${heroImage}" alt="${heroAlt}" loading="eager"></div>`
+    : '<div class="podcast-artwork" style="background: var(--latest-episode-badge-bg); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--black);">🎙️</div>';
+
   const html = `${renderHead('ホーム', undefined, 'home')}
 <main id="main-content" class="site-main home-page">
 <section class="podcast-hero" aria-labelledby="hero-title">
@@ -485,9 +504,7 @@ function buildHome({ episodes, site }) {
       <h1 id="hero-title" class="hero-title">ContentFreaks</h1>
       <p class="hero-subtitle">好きな作品、語り尽くそう！</p>
       <div class="podcast-hero-content-block">
-        <div class="podcast-hero-artwork">
-          <div class="podcast-artwork" style="background: var(--latest-episode-badge-bg); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--black);">🎙️</div>
-        </div>
+        <div class="podcast-hero-artwork">${heroArtwork}</div>
         <div class="podcast-hero-text">
           <div class="podcast-hero-description">「コンテンツフリークス」は、大学時代からの友人2人で「いま気になる」注目のエンタメコンテンツを熱く語るポッドキャスト</div>
           <div class="history-cta"><a href="/history/" class="history-btn">📜 コンフリの歩みを見る</a></div>
