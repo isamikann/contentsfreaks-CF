@@ -117,7 +117,7 @@ function copyAssets() {
   });
 }
 
-function renderHead(title, description) {
+function renderHead(title, description, bodyClass = '') {
   const desc = description || 'ContentFreaks podcast static site';
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -194,7 +194,7 @@ function renderHead(title, description) {
     @media (prefers-color-scheme: dark) { .minimal-header { background: rgba(26,26,26,0.8); border-bottom-color: rgba(255,255,255,0.08); } .minimal-header.scrolled { background: rgba(26,26,26,0.9); } .brand-text, .menu-brand-name { color: #ffffff; } .hamburger-icon .line { background: #f2f2f2; } .slide-menu-container { background: #1a1a1a; } .menu-header { border-bottom-color: rgba(255,255,255,0.1); } .nav-link { color: #e0e0e0; } .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; } .menu-footer { border-top-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); } .close-line { background: #999; } }
   </style>
 </head>
-<body>
+<body${bodyClass ? ` class="${bodyClass}"` : ''}>
 <a class="skip-link" href="#main-content">コンテンツへスキップ</a>
 <header id="contentfreaks-header" class="minimal-header">
   <div class="header-container">
@@ -479,7 +479,7 @@ function buildHome({ episodes, site }) {
 
   const recentList = recent.map(renderEpisodeCard).join('\n');
 
-  const html = `${renderHead('ホーム')}
+  const html = `${renderHead('ホーム', undefined, 'home')}
 <main id="main-content" class="site-main home-page">
 <section class="podcast-hero" aria-labelledby="hero-title">
   <div class="podcast-hero-particles">${'<div class="particle"></div>'.repeat(9)}</div>
