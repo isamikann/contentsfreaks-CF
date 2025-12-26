@@ -387,9 +387,9 @@ Version: 2.0.0
     --page-title: clamp(1.8rem, 3.5vw, 2.5rem);
     --hero-subtitle: clamp(1.7rem, 3.5vw, 2.5rem);
 
-    /* 記事・エピソードタイトル */
-    --card-title: 1.1rem;
-    --card-title-large: 1.2rem;
+    /* 記事・エピソードタイトル（WPと揃える） */
+    --card-title: 1.125rem;
+    --card-title-large: 1.25rem;
     --single-title: clamp(1.4rem, 2.5vw, 1.8rem);
 
     /* 本文・説明文 */
@@ -408,7 +408,7 @@ Version: 2.0.0
 
     /* モバイル用フォントサイズ */
     --mobile-hero-title: clamp(1.8rem, 4vw, 2.5rem);
-    --mobile-card-title: 1rem;
+    --mobile-card-title: 1.05rem;
     --mobile-body-text: 0.95rem;
     --mobile-meta: 0.8rem;
 }
