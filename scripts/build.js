@@ -414,16 +414,18 @@ function renderEpisodeCard(ep) {
 
 function renderBlogCard(post) {
   const tags = (post.tags || []).slice(0, 3).map((t) => `<span class="blog-tag">#${t}</span>`).join('');
+  const readTime = post.readTime || '3分';
   return `<article class="blog-card" data-category="${post.category}">
   <div class="blog-thumbnail">
     ${post.image ? `<img src="${post.image}" alt="${post.title}" loading="lazy">` : '<div class="blog-placeholder">📖</div>'}
     <div class="blog-category-badge">${post.category}</div>
     <div class="blog-date-badge">${post.formattedDate}</div>
+    <div class="blog-featured-overlay">📄</div>
   </div>
   <div class="blog-content">
     <div class="blog-meta">
       <span class="blog-author">ContentFreaks</span>
-      <span class="blog-read-time">読了目安</span>
+      <span class="blog-read-time">読了 ${readTime}</span>
     </div>
     <h3 class="blog-title"><a href="/blog/${post.slug}/">${post.title}</a></h3>
     <div class="blog-excerpt">${post.excerpt}</div>
@@ -566,8 +568,9 @@ function buildEpisodeList({ episodes }) {
       : '';
     const html = `${renderHead('エピソード一覧')}
   <main id="main-content" class="site-main contentfreaks-episodes-page">
-  <section class="episodes-hero"><div class="episodes-hero-bg"><div class="hero-pattern"></div></div><div class="episodes-hero-content"><div class="episodes-hero-icon">🎙️</div><h1>Podcast Episodes</h1><p class="episodes-hero-description">コンテンツフリークスの全エピソードを一覧でお楽しみください。</p><div class="episodes-hero-stats"><div class="episodes-stat"><span class="episodes-stat-number">${episodes.length}</span><span class="episodes-stat-label">エピソード</span></div><div class="episodes-stat"><span class="episodes-stat-number">🔥</span><span class="episodes-stat-label">熱い語り</span></div><div class="episodes-stat"><span class="episodes-stat-number">🔍</span><span class="episodes-stat-label">深掘り分析</span></div></div></div></section>
-  <section class="episodes-content-section"><div class="episodes-container"><div class="search-controls"><div class="search-box"><input type="text" id="episode-search" class="search-input" placeholder="エピソードを検索..." /></div></div><div class="episodes-grid" id="episodes-grid">${cards}</div>${pagination}</div></section>
+  <section class="episodes-hero"><div class="episodes-hero-bg"><div class="hero-pattern"></div></div><div class="episodes-hero-particles"><div class="episodes-particle"></div><div class="episodes-particle"></div><div class="episodes-particle"></div><div class="episodes-particle"></div><div class="episodes-particle"></div><div class="episodes-particle"></div></div><div class="episodes-hero-content"><div class="episodes-hero-icon">🎙️</div><h1>Podcast Episodes</h1><p class="episodes-hero-description">コンテンツフリークスの全エピソードを一覧でお楽しみください。
+                最新のエピソードから過去の名作まで、すべてここに集約されています。</p><div class="episodes-hero-stats"><div class="episodes-stat"><span class="episodes-stat-number">${episodes.length}</span><span class="episodes-stat-label">エピソード</span></div><div class="episodes-stat"><span class="episodes-stat-number">🔥</span><span class="episodes-stat-label">熱い語り</span></div><div class="episodes-stat"><span class="episodes-stat-number">🔍</span><span class="episodes-stat-label">深掘り分析</span></div></div></div></section>
+  <section class="episodes-content-section"><div class="episodes-container"><div class="search-controls"><div class="search-box"><input type="text" id="episode-search" class="search-input" placeholder="エピソードを検索..." /><button type="button" class="search-button">🔍</button></div></div><div class="episodes-grid" id="episodes-grid">${cards}</div>${pagination}</div></section>
   </main>
   ${renderFooter()}`;
     const rel = pageNumber === 1 ? 'episodes/index.html' : `episodes/page/${pageNumber}/index.html`;
@@ -731,8 +734,7 @@ ${renderFooter()}`;
 }
 
 function buildProfile({ site, episodes }) {
-  const hosts = renderHosts(site.hosts || []);
-  const hostCount = (site.hosts || []).length;
+  const hostCount = 2;
   const episodeCount = episodes.length;
   const listenerCount = site.listenerCount || 1500;
   const html = `${renderHead('プロフィール')}
@@ -754,7 +756,55 @@ function buildProfile({ site, episodes }) {
   </section>
 
   <section class="profile-details-section">
-    ${hosts || '<div class="profile-details-container"><p>ホスト情報がまだありません。</p></div>'}
+    <div class="profile-details-container">
+      <div class="host-profile-card host-card-primary">
+        <div class="host-profile-header">
+          <div class="host-profile-avatar">
+            <div class="avatar-placeholder primary-gradient"><span class="avatar-icon">🎙️</span></div>
+            <div class="avatar-badge">Host</div>
+          </div>
+          <div class="host-profile-info">
+            <h2 class="host-name">みっくん</h2>
+            <p class="host-role">メインパーソナリティ</p>
+            <div class="host-tags"><span class="host-tag primary">コンテンツフリーク</span><span class="host-tag secondary">司会進行担当</span><span class="host-tag accent">エンジニア</span></div>
+            <div class="host-social-links"></div>
+          </div>
+        </div>
+        <div class="host-profile-content">
+          <div class="host-description"><p>コンテンツとポッドキャストをこよなく愛する、メーカー勤務のアプリエンジニア。マンガ・アニメ・ドラマ・映画・小説…ジャンルを問わず楽しむ雑食系クリエイターウォッチャー。</p></div>
+          <div class="host-details-grid">
+            <div class="host-detail"><div class="detail-icon">🎙</div><h4 class="detail-title">番組での役割</h4><p class="detail-content">作品の裏側を深掘り＆司会進行を担当！気になるポイントを引き出しながら、熱く語ります。</p></div>
+            <div class="host-detail"><div class="detail-icon">📌</div><h4 class="detail-title">推しキャラタイプ</h4><p class="detail-content">「憂いはあるが、行動はポジティブ」なキャラクターに心惹かれがち。</p></div>
+            <div class="host-detail"><div class="detail-icon">💼</div><h4 class="detail-title">職業</h4><p class="detail-content">メーカー勤務のアプリエンジニア</p></div>
+            <div class="host-detail"><div class="detail-icon">🎯</div><h4 class="detail-title">好きなジャンル</h4><p class="detail-content">マンガ・アニメ・ドラマ・映画・小説（雑食系）</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="host-profile-card host-card-secondary">
+        <div class="host-profile-header">
+          <div class="host-profile-avatar">
+            <div class="avatar-placeholder secondary-gradient"><span class="avatar-icon">🎧</span></div>
+            <div class="avatar-badge">Co-Host</div>
+          </div>
+          <div class="host-profile-info">
+            <h2 class="host-name">あっきー</h2>
+            <p class="host-role">サブパーソナリティ</p>
+            <div class="host-tags"><span class="host-tag primary">コンテンツ見習い</span><span class="host-tag secondary">一般目線担当</span><span class="host-tag accent">エンジニア</span></div>
+            <div class="host-social-links"></div>
+          </div>
+        </div>
+        <div class="host-profile-content">
+          <div class="host-description"><p>コンテンツをほどよく楽しむ、メーカー勤務のハードエンジニア。主にアニメを中心に視聴し、ドラマは「コンテンツフリークス」をきっかけにハマり中。</p></div>
+          <div class="host-details-grid">
+            <div class="host-detail"><div class="detail-icon">🎙</div><h4 class="detail-title">番組での役割</h4><p class="detail-content">一般目線の感想を担当し、親しみやすさをプラス！リスナーと同じ視点で語ります。</p></div>
+            <div class="host-detail"><div class="detail-icon">📌</div><h4 class="detail-title">推しキャラタイプ</h4><p class="detail-content">「一周回って落ち着いた強者」なキャラクターに魅力を感じがち。</p></div>
+            <div class="host-detail"><div class="detail-icon">💼</div><h4 class="detail-title">職業</h4><p class="detail-content">メーカー勤務のハードエンジニア</p></div>
+            <div class="host-detail"><div class="detail-icon">🎯</div><h4 class="detail-title">好きなジャンル</h4><p class="detail-content">主にアニメ中心、ドラマにもハマり中</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="team-dynamics-section">
